@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import supabase from '../../utils/supabase';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 
 export default function LoginForm() {
-  const navigage = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -13,22 +16,26 @@ export default function LoginForm() {
     setMessage('');
 
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
+      email,
+      password,
     });
+
     if (error) {
       setMessage(error.message);
       setEmail('');
       setPassword('');
       return;
     }
-    if (data) {
-      navigage('/dashboard');
-      return null;
+
+    if (data.user) {
+      dispatch(login()); // ✅ Dispatch Redux login action
+      navigate('/dashboard'); // ✅ Redirect after successful login
     }
+
     setEmail('');
     setPassword('');
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white p-4">
       <div className="bg-gray-800 shadow-xl rounded-lg p-8 w-full max-w-md border border-gray-700">

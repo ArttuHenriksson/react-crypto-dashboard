@@ -1,65 +1,60 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import supabase from '../../utils/supabase';
+import { useSelector } from 'react-redux';
+import LogoutButton from '../auth/LogoutButton';
+import { RootState } from '../../store/store.ts';
 
 export default function Navigation() {
-  const [authenticated, setAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setAuthenticated(!!session); // Set authenticated state
-    };
-
-    checkSession();
-
-    // Listen for auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      checkSession();
-    });
-
-    // Cleanup subscription on unmount
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, []);
+  const { authenticated } = useSelector((state: RootState) => state.auth);
 
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-800 text-white p-4 z-50 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-blue-400">
-          CryptoDashboard app
+          Crypto Tracker
         </Link>
-        <nav className="md:flex gap-8 text-lg hidden ">
-          <ul className="flex gap-6">
+        <nav>
+          <ul className="flex gap-6 text-lg">
+            {/* Always Show Home */}
             <li>
               <Link to="/" className="hover:text-blue-400 transition">
                 Home
               </Link>
             </li>
-            <li>
-              <Link to="/register" className="hover:text-blue-400 transition">
-                Register
-              </Link>
-            </li>
-            <li>
-              <Link to="/login" className="hover:text-blue-400 transition">
-                Login
-              </Link>
-            </li>
+
+            {/* Show Register and Login if NOT authenticated */}
+            {!authenticated && (
+              <>
+                <li>
+                  <Link
+                    to="/register"
+                    className="hover:text-blue-400 transition"
+                  >
+                    Register
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/login" className="hover:text-blue-400 transition">
+                    Login
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* Show Dashboard and Logout if authenticated */}
             {authenticated && (
-              <li>
-                <Link
-                  to="/dashboard"
-                  className="hover:text-blue-400 transition"
-                >
-                  Dashboard
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/dashboard"
+                    className="hover:text-blue-400 transition"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <LogoutButton /> {/* Logout Button */}
+                </li>
+              </>
             )}
           </ul>
         </nav>

@@ -1,32 +1,13 @@
-import { ReactNode, useEffect, useState } from 'react';
-import supabase from '../utils/supabase';
-import { Navigate } from 'react-router';
+import { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 export default function Wrapper({ children }: { children: ReactNode }) {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setAuthenticated(!!session);
-      setLoading(false);
-    };
-    getSession();
-
-    // Listen for auth changes (login/logout)
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (session) => {
-        setAuthenticated(!!session);
-      }
-    );
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
+  const authenticated = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
+  const loading = false; // Add a loading state if needed
 
   if (loading) {
     return (

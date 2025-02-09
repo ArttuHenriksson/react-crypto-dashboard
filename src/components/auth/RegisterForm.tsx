@@ -1,31 +1,35 @@
 import { useState } from 'react';
 import supabase from '../../utils/supabase';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 
 export default function RegisterForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setMessage('');
 
     const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email,
+      password,
     });
+
     if (error) {
       setMessage(error.message);
       return;
     }
-    if (data) {
-      setMessage(
-        'User account created! :) Please log in to access your dashboard.'
-      );
-      navigate('/login');
-      return null;
+
+    if (data.user) {
+      dispatch(login()); // ✅ Update Redux state
+      navigate('/dashboard'); // ✅ Redirect to dashboard
     }
+
     setEmail('');
     setPassword('');
   };
@@ -58,7 +62,6 @@ export default function RegisterForm() {
             type="submit"
             className="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-medium"
           >
-            {' '}
             Create account
           </button>
         </form>
