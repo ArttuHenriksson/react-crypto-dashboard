@@ -7,19 +7,17 @@ import Navigation from './components/ui/Navigation';
 import Footer from './components/ui/Footer';
 import Wrapper from './pages/Wrapper';
 import './App.css';
+import InfiniteHorizontalScroller from './components/ui/InfiniteHorizontalScroller';
 
 function App() {
   return (
     <BrowserRouter>
       <Navigation />
+      <InfiniteHorizontalScroller />
       <Routes>
-        {/* Home */}
-        <Route path="/" element={<Home />}></Route>
-        {/* Register */}
-        <Route path="/register" element={<Register />}></Route>
-        {/* Login */}
-        <Route path="/login" element={<Login />}></Route>
-        {/* Dashboard */}
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/dashboard"
           element={
@@ -27,7 +25,7 @@ function App() {
               <Dashboard />
             </Wrapper>
           }
-        ></Route>
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

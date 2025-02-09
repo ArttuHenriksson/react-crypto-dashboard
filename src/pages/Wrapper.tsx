@@ -18,7 +18,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
 
     // Listen for auth changes (login/logout)
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (session) => {
         setAuthenticated(!!session);
       }
     );
