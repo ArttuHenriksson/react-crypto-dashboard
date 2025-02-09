@@ -12,7 +12,8 @@ export default function Wrapper({ children }: { children: ReactNode }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
-        <p>Loading...</p>
+        <p>LOADING SPINNER TO HERE</p>
+        //TODO: Add a loading spinner here
       </div>
     );
   }

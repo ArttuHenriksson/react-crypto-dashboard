@@ -7,13 +7,12 @@ import Navigation from './components/ui/Navigation';
 import Footer from './components/ui/Footer';
 import Wrapper from './pages/Wrapper';
 import './App.css';
-import InfiniteHorizontalScroller from './components/ui/InfiniteHorizontalScroller';
 
 function App() {
   return (
     <BrowserRouter>
       <Navigation />
-      <InfiniteHorizontalScroller />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />

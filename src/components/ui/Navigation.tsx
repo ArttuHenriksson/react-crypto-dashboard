@@ -54,6 +54,7 @@ export default function Navigation() {
                 <li>
                   <LogoutButton /> {/* Logout Button */}
                 </li>
+                //TODO make the logout button fit to the navbar
               </>
             )}
           </ul>
