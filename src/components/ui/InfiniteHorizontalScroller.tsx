@@ -2,7 +2,6 @@ import { TokenIcon } from '@web3icons/react';
 import { coins } from '../../helper/coinList';
 import '../../App.css';
 export default function InfiniteHorizontalScroller() {
-  coins.map((coin) => console.log(coin));
   return (
     <div className="border-y bg-gray-500  bg-opacity-10 py-2 w-screen overflow-clip absolute left-0 top-16">
       <div className="flex animate-scroll">
