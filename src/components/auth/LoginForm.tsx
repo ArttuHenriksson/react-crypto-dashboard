@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import supabase from '../../utils/supabase';
+import supabase from '../../utils/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';

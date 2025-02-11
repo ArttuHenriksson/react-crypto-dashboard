@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import supabase from '../../utils/supabase';
+import supabase from '../../utils/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
@@ -15,9 +15,14 @@ export default function RegisterForm() {
     e.preventDefault();
     setMessage('');
 
+    const avatarUrl = `https://robohash.org/${encodeURIComponent(email)}.png`;
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: { avatar: avatarUrl }, // Store avatar in user metadata
+      },
     });
 
     if (error) {
